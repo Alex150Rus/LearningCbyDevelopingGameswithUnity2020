@@ -56,6 +56,8 @@ public class GameBehaviour : MonoBehaviour, IManager
         }
     }
 
+    public Stack<string> lootStack = new Stack<string>();
+
     void ShowScreen(bool win, string text)
     {
         if (win)
@@ -73,6 +75,12 @@ public class GameBehaviour : MonoBehaviour, IManager
         _state.FancyDebug();
         
         Debug.Log(_state);
+        
+        lootStack.Push("Sword of Doom");
+        lootStack.Push("HP+");
+        lootStack.Push("Golden Key");
+        lootStack.Push("Winged Boot");
+        lootStack.Push("Mythril Bracers");
     }
 
     private void Start()
@@ -103,5 +111,15 @@ public class GameBehaviour : MonoBehaviour, IManager
                 Utilities.RestartLevel();
             }
         }
+    }
+    
+    public void PrintLootReport()
+    {
+        var currentItem = lootStack.Pop();
+        var nextItem = lootStack.Peek();
+        
+        Debug.LogFormat("You got a {0}! You've got a good chance of finding a {1} next!", currentItem, nextItem);
+        
+        Debug.LogFormat("There are {0} random loot items waiting for you!", lootStack.Count);
     }
 }
