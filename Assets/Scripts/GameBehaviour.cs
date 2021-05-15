@@ -21,9 +21,7 @@ public class GameBehaviour : MonoBehaviour
             _itemsCollected = value; 
             
             if(_itemsCollected >= maxItems) {
-                labelText = "You've found all the items!";
-                showWinScreen = true;
-                Time.timeScale = 0f;
+                ShowScreen(true, "You've found all the items!");
             }
             else
                 labelText = "Item found, only " + (maxItems - _itemsCollected) + " more to go!";
@@ -39,15 +37,30 @@ public class GameBehaviour : MonoBehaviour
             _playerHP = value; 
             if(_playerHP <= 0)
             {
-                labelText = "You want another life with that?";
-                showLossScreen = true;
-                Time.timeScale = 0;
+                ShowScreen(false, "You want another life with that?");
             }
             else
             {
                 labelText = "Ouch... that's got hurt.";
             }
         }
+    }
+
+    void RestartLevel()
+    {
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1.0f;
+    }
+
+    void ShowScreen(bool win, string text)
+    {
+        if (win)
+            showWinScreen = true;
+        else
+            showLossScreen = true;
+
+        labelText = text;
+        Time.timeScale = 0;
     }
     
     void OnGUI()
@@ -61,8 +74,7 @@ public class GameBehaviour : MonoBehaviour
             if (GUI.Button(new Rect(Screen.width / 2 - 100,
                 Screen.height / 2 - 50, 200, 100), "YOU WON!"))
             {
-                SceneManager.LoadScene(0);
-               Time.timeScale = 1.0f;
+                RestartLevel();
             }
         }
         
@@ -71,8 +83,7 @@ public class GameBehaviour : MonoBehaviour
             if (GUI.Button(new Rect(Screen.width / 2 - 100, 
                 Screen.height / 2 - 50, 200, 100), "You lose..."))
             {
-                SceneManager.LoadScene(0);
-                Time.timeScale = 1.0f;
+                RestartLevel();
             }
         }
     }
