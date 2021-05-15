@@ -10,6 +10,9 @@ public class PlayerBehaviour : MonoBehaviour
     public float jumpVelocity = 5f;
     public float distanceToGround = 0.1f;
     public LayerMask groundLayer;
+
+    public GameObject bullet;
+    public float bulletSpeed = 100f;
     
     private float vInput;
     private float hInput;
@@ -50,11 +53,22 @@ public class PlayerBehaviour : MonoBehaviour
         
         if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
             _rb.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
+        
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject newBullet = Instantiate(bullet,
+                transform.position + new Vector3(1, 0, 0),    
+                transform.rotation);
+
+            Rigidbody bulletRB = 
+                newBullet.GetComponent<Rigidbody>();
+ 
+            bulletRB.velocity = transform.forward * bulletSpeed;
+        }
     }
 
     private void FixedUpdate()
     {
-
         Vector3 rotation = Vector3.up * hInput;
 
         Quaternion angleRot = Quaternion.Euler(rotation *Time.fixedDeltaTime);
