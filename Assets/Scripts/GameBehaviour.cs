@@ -9,6 +9,7 @@ public class GameBehaviour : MonoBehaviour
     public int maxItems = 4;
     
     public bool showWinScreen = false;
+    public bool showLossScreen = false;
     
     private int _itemsCollected = 0;
     
@@ -36,7 +37,16 @@ public class GameBehaviour : MonoBehaviour
         get { return _playerHP; }
         set { 
             _playerHP = value; 
-            Debug.LogFormat("Lives: {0}", _playerHP);
+            if(_playerHP <= 0)
+            {
+                labelText = "You want another life with that?";
+                showLossScreen = true;
+                Time.timeScale = 0;
+            }
+            else
+            {
+                labelText = "Ouch... that's got hurt.";
+            }
         }
     }
     
@@ -53,6 +63,16 @@ public class GameBehaviour : MonoBehaviour
             {
                 SceneManager.LoadScene(0);
                Time.timeScale = 1.0f;
+            }
+        }
+        
+        if(showLossScreen)
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - 100, 
+                Screen.height / 2 - 50, 200, 100), "You lose..."))
+            {
+                SceneManager.LoadScene(0);
+                Time.timeScale = 1.0f;
             }
         }
     }
