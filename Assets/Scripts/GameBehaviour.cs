@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine; 
-using UnityEngine.SceneManagement;
+using CustomExtensions;
 
 public class GameBehaviour : MonoBehaviour, IManager
 {
@@ -70,6 +70,8 @@ public class GameBehaviour : MonoBehaviour, IManager
     public void Initialize() 
     {
         _state = "Manager initialized..";
+        _state.FancyDebug();
+        
         Debug.Log(_state);
     }
 
