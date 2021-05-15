@@ -20,6 +20,8 @@ public class PlayerBehaviour : MonoBehaviour
     private Rigidbody _rb;
     private CapsuleCollider _col;
     
+    private GameBehaviour _gameManager;
+    
     private void MoveTransform(float vInput, float hInput, float deltaTime)
     {
         transform.Translate(Vector3.forward * vInput * deltaTime);
@@ -43,6 +45,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<CapsuleCollider>();
+        
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameBehaviour>();
     }
 
     void Update()
@@ -76,5 +80,13 @@ public class PlayerBehaviour : MonoBehaviour
         _rb.MovePosition(transform.position + transform.forward * vInput * Time.fixedDeltaTime);
         
         _rb.MoveRotation(_rb.rotation * angleRot);
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name == "Enemy")
+        {
+            _gameManager.HP -= 1;
+        }
     }
 }
